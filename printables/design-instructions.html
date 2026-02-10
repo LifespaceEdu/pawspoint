@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PawsPoint — Lesson Design Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      color: #2c2c2c;
+      line-height: 1.6;
+      padding: 0.75in;
+      max-width: 8.5in;
+    }
+    @media print {
+      body { padding: 0.5in; }
+      .no-print { display: none; }
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      color: #2d6a4f;
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: #52796f;
+      margin-bottom: 1.25rem;
+    }
+
+    .pick-box {
+      background: #d4edda;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .pick-box h2 {
+      font-size: 1.15rem;
+      color: #2d6a4f;
+      margin-bottom: 0.5rem;
+    }
+    .skill-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    .skill-option {
+      background: white;
+      border: 2px solid #d4edda;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      text-align: center;
+    }
+    .skill-option .name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #2d6a4f;
+    }
+    .skill-option .desc {
+      font-size: 0.75rem;
+      color: #52796f;
+    }
+    .skill-option.example {
+      opacity: 0.4;
+      position: relative;
+    }
+    .skill-option.example::after {
+      content: "(done)";
+      font-size: 0.65rem;
+      color: #e76f51;
+      display: block;
+    }
+
+    .steps-list {
+      margin-bottom: 1.25rem;
+    }
+    .steps-list h2 {
+      font-size: 1.15rem;
+      color: #2d6a4f;
+      margin-bottom: 0.5rem;
+    }
+    .step-item {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #f4a261;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-text {
+      flex: 1;
+    }
+    .step-text strong {
+      color: #2d6a4f;
+    }
+    .step-text p {
+      font-size: 0.9rem;
+      margin-top: 0.1rem;
+    }
+
+    .tips-box {
+      background: #fef3e2;
+      border-left: 4px solid #f4a261;
+      border-radius: 0 10px 10px 0;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .tips-box h3 {
+      font-size: 1rem;
+      color: #e76f51;
+      margin-bottom: 0.25rem;
+    }
+    .tips-box ul {
+      font-size: 0.85rem;
+      padding-left: 1.25rem;
+    }
+    .tips-box li {
+      margin-bottom: 0.2rem;
+    }
+
+    .think-questions {
+      background: white;
+      border: 2px solid #d4edda;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+    .think-questions h2 {
+      font-size: 1.15rem;
+      color: #2d6a4f;
+      margin-bottom: 0.5rem;
+    }
+    .think-questions ol {
+      padding-left: 1.25rem;
+      font-size: 0.9rem;
+    }
+    .think-questions li {
+      margin-bottom: 0.35rem;
+    }
+    .write-line {
+      display: block;
+      border-bottom: 1px solid #ccc;
+      height: 1.5rem;
+      margin-top: 0.15rem;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>PawsPoint Lesson Designer</h1>
+  <p class="subtitle">Your job: pick a skill and design how it will look in the app.</p>
+
+  <div class="pick-box">
+    <h2>Pick your skill</h2>
+    <p style="font-size:0.85rem; margin-bottom:0.5rem;">Circle the one you're designing today. Each person picks a different one.</p>
+    <div class="skill-options">
+      <div class="skill-option example">
+        <div class="name">Station</div>
+        <div class="desc">Go to a mat and settle</div>
+      </div>
+      <div class="skill-option">
+        <div class="name">Look</div>
+        <div class="desc">Eye contact on cue</div>
+      </div>
+      <div class="skill-option">
+        <div class="name">Tuck</div>
+        <div class="desc">Curl into a small space</div>
+      </div>
+      <div class="skill-option">
+        <div class="name">Chin</div>
+        <div class="desc">Chin rest for calm</div>
+      </div>
+      <div class="skill-option">
+        <div class="name">Middle</div>
+        <div class="desc">Between your legs</div>
+      </div>
+      <div class="skill-option">
+        <div class="name">Feet</div>
+        <div class="desc">Paws on your feet</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps-list">
+    <h2>What to do</h2>
+
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Answer the questions at the bottom of this page</strong>
+        <p>Think about the skill before you draw anything. What does the dog actually need to learn?</p>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Use the blank screens to draw your lesson</strong>
+        <p>You have 3 screens. Use as many as you need. Draw where the text goes, where pictures go, and what each part of the page says. Label everything.</p>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Write the training steps on the lines below the screens</strong>
+        <p>These are the actual instructions someone would follow to teach their dog. Be specific enough that a person who has never trained a dog could do it.</p>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <strong>Trade with your partner and check each other's work</strong>
+        <p>Could you teach a dog this skill using only what they drew and wrote? If something is confusing, tell them what's unclear.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tips-box">
+    <h3>Drawing tips</h3>
+    <ul>
+      <li>Boxes and labels are fine. This is not an art project.</li>
+      <li>Use arrows to show what someone taps or where they scroll</li>
+      <li>Stick figures work great for showing the dog and handler</li>
+      <li>If you want an image somewhere, just draw a box and write what the image shows</li>
+      <li>Write the actual words you want on the screen, not just "text goes here"</li>
+    </ul>
+  </div>
+
+  <div class="think-questions">
+    <h2>Think first, then draw</h2>
+    <ol>
+      <li>
+        What is the skill called, and what does it look like when the dog does it right?
+        <span class="write-line"></span>
+        <span class="write-line"></span>
+      </li>
+      <li>
+        Why would a traveler need this skill? When would they actually use it?
+        <span class="write-line"></span>
+        <span class="write-line"></span>
+      </li>
+      <li>
+        Break the training into steps. How does a beginner start? (Think: what did WE do first?)
+        <span class="write-line"></span>
+        <span class="write-line"></span>
+        <span class="write-line"></span>
+      </li>
+      <li>
+        How does the owner know the dog has learned it? What does success look like?
+        <span class="write-line"></span>
+        <span class="write-line"></span>
+      </li>
+    </ol>
+  </div>
+
+</body>
+</html>

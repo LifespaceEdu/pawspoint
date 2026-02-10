@@ -1,162 +1,339 @@
-/* PawsPoint — base styles */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ═══ PawsPoint — theme layer on Bootstrap 5 ═══ */
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f5f0eb;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #d4edda;
   color: #2c2c2c;
-  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
 }
 
-/* Header */
-header {
-  text-align: center;
-  padding: 2rem 1rem;
-  background: #1b3a4b;
-  color: #f5f0eb;
+/* ── Decorative corner circles ── */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: #f4a261;
+  border: 12px solid white;
+  z-index: 0;
+  pointer-events: none;
 }
 
-header h1 {
-  font-size: 2.5rem;
-  letter-spacing: 0.05em;
+body::before {
+  top: -150px;
+  right: -150px;
 }
 
-.tagline {
-  font-size: 1.1rem;
-  opacity: 0.8;
-  margin-top: 0.25rem;
+body::after {
+  bottom: -150px;
+  left: -150px;
 }
 
-/* Skills grid */
-main {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+/* ── Brand colours ── */
+.pp-green  { color: #2d6a4f; }
+.pp-orange { color: #f4a261; }
+
+/* ── Logo ── */
+.pp-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
 }
 
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
+.pp-brand {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  color: #2d6a4f;
 }
 
-.skill-card {
+/* ══════════════════════════════════════
+   DASHBOARD CARD
+   ══════════════════════════════════════ */
+.pp-card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+}
+
+.pp-card-header {
+  background: linear-gradient(135deg, #2d6a4f, #40916c);
+}
+
+/* ── Circular progress ring (conic-gradient) ── */
+.pp-ring {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(from 220deg, #e9ecef 0deg, #e9ecef 280deg, transparent 280deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transition: background .8s ease;
+}
+
+.pp-ring-inner {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,.06);
+}
+
+.pp-ring-pct {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2d6a4f;
+  line-height: 1;
+}
+
+.pp-ring-label {
+  font-size: .7rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.pp-count-badge {
+  background: #e9ecef;
+  color: #495057;
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+/* ── Checklist rows ── */
+.pp-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+
+.pp-check-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pp-ci {
+  font-size: 1.1rem;
+  color: #ced4da;
+  flex-shrink: 0;
+  width: 22px;
+  text-align: center;
+  transition: color .2s;
+}
+
+.pp-check-row.done .pp-ci {
+  color: #2d6a4f;
+}
+
+.pp-cn {
+  font-weight: 700;
+  font-size: .82rem;
+  color: #2d6a4f;
+  width: 56px;
+  flex-shrink: 0;
+}
+
+.pp-cp {
+  font-size: .72rem;
+  font-weight: 700;
+  color: #adb5bd;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pp-check-row.done .pp-cp {
+  color: #2d6a4f;
+}
+
+/* ── Progress bar colour ── */
+.pp-bar {
+  background: linear-gradient(90deg, #f4a261, #e76f51);
+  border-radius: 4px;
+  transition: width .5s ease;
+}
+
+/* ══════════════════════════════════════
+   SKILL CARDS
+   ══════════════════════════════════════ */
+.pp-skill-card {
+  border: 2px solid #f4a261;
+  border-radius: 14px;
+  transition: transform .15s, box-shadow .15s;
   color: inherit;
-  border: 2px solid transparent;
-  transition: transform 0.15s, box-shadow 0.15s;
 }
 
-.skill-card h2 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+.pp-skill-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(244,162,97,.25);
 }
 
-.skill-card p {
-  font-size: 0.9rem;
-  opacity: 0.7;
+.pp-badge {
+  background: #f4a261;
+  font-size: .75rem;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.skill-card.active {
-  border-color: #e07a3a;
-  cursor: pointer;
-}
-
-.skill-card.active:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.skill-card.locked {
-  opacity: 0.5;
-}
-
-/* Skill page layout */
+/* ══════════════════════════════════════
+   SKILL PAGE (lesson view)
+   ══════════════════════════════════════ */
 .skill-page {
   max-width: 700px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-.back-link {
-  display: inline-block;
-  color: #1b3a4b;
-  text-decoration: none;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-}
-
-.skill-page h1 {
-  font-size: 2rem;
-  color: #1b3a4b;
-  margin-bottom: 0.5rem;
-}
-
 .why-box {
-  background: #e8f0e4;
-  border-left: 4px solid #5a8a4a;
+  background: rgba(255,255,255,.85);
+  border-left: 4px solid #2d6a4f;
   padding: 1rem 1.25rem;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 12px 12px 0;
   margin: 1.5rem 0;
 }
 
-.why-box h3 {
-  color: #5a8a4a;
-  margin-bottom: 0.25rem;
-}
-
-.steps {
-  margin: 1.5rem 0;
-}
-
-.steps h2 {
-  font-size: 1.4rem;
-  color: #1b3a4b;
-  margin-bottom: 1rem;
-}
+.why-box h3 { color: #2d6a4f; margin-bottom: .25rem; }
 
 .step {
-  background: white;
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 12px;
   padding: 1rem 1.25rem;
-  margin-bottom: 0.75rem;
-  border-left: 4px solid #e07a3a;
+  margin-bottom: .75rem;
+  border-left: 4px solid #f4a261;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
 }
 
-.step h4 {
-  color: #e07a3a;
-  margin-bottom: 0.25rem;
-}
+.step h4 { color: #e76f51; margin-bottom: .25rem; }
 
 .success-box {
-  background: #fef3e2;
-  border-left: 4px solid #e07a3a;
+  background: rgba(244,162,97,.12);
+  border-left: 4px solid #f4a261;
   padding: 1rem 1.25rem;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 12px 12px 0;
   margin: 1.5rem 0;
 }
 
-.success-box h3 {
-  color: #c06020;
-  margin-bottom: 0.25rem;
+.success-box h3 { color: #e76f51; margin-bottom: .25rem; }
+
+.placeholder-notice {
+  background: rgba(255,255,255,.85);
+  border: 2px dashed #f4a261;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  margin: 2rem 0;
+  color: #52796f;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.85rem;
-  opacity: 0.6;
+.placeholder-notice h3 { color: #e76f51; margin-bottom: .5rem; }
+
+.back-link {
+  color: #2d6a4f;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: .9rem;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+/* ══════════════════════════════════════
+   DOG NAME OVERLAY
+   ══════════════════════════════════════ */
+.pp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.pp-overlay.visible {
+  display: flex;
+}
+
+.pp-name-card {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.2);
+  max-width: 380px;
+  width: 90%;
+}
+
+.pp-name-input {
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #2d6a4f;
+  font-size: 1.2rem;
+}
+
+.pp-name-input:focus {
+  border-color: #f4a261;
+  box-shadow: 0 0 0 3px rgba(244,162,97,.25);
+}
+
+.pp-btn-go {
+  background: linear-gradient(135deg, #2d6a4f, #40916c);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: opacity .15s;
+}
+
+.pp-btn-go:hover { opacity: .9; color: white; }
+.pp-btn-go:disabled { opacity: .4; color: white; }
+
+/* Edit name pencil icon */
+.pp-edit-name {
+  color: #adb5bd;
+  text-decoration: none;
+  font-size: .85rem;
+  margin-left: .25rem;
+  transition: color .15s;
+}
+
+.pp-edit-name:hover { color: #2d6a4f; }
+
+/* Share code display */
+.pp-code-display {
+  font-family: 'Courier New', monospace;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+  color: #2d6a4f;
+  background: #e8f5e9;
+  border: 2px dashed #2d6a4f;
+  border-radius: 12px;
+  padding: .5rem 1rem;
+  display: inline-block;
+}
+
+/* Ensure main content sits above corner circles */
+header, main, .container, footer, .skill-page {
+  position: relative;
+  z-index: 1;
 }

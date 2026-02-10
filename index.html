@@ -4,45 +4,439 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PawsPoint — Train Your Dog for Travel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <h1>PawsPoint</h1>
-    <p class="tagline">Six skills to get your dog travel-ready</p>
-  </header>
 
-  <main>
-    <section class="skills-grid">
-      <a href="skills/station.html" class="skill-card active">
-        <h2>Station</h2>
-        <p>Go to a mat or bed and settle — the foundation skill</p>
-      </a>
-      <div class="skill-card locked">
-        <h2>Look</h2>
-        <p>Eye contact on cue — focus amidst chaos</p>
-      </div>
-      <div class="skill-card locked">
-        <h2>Tuck</h2>
-        <p>Curl up in a small space — airplane and car ready</p>
-      </div>
-      <div class="skill-card locked">
-        <h2>Chin</h2>
-        <p>Chin rest for calm — settle without a mat</p>
-      </div>
-      <div class="skill-card locked">
-        <h2>Middle</h2>
-        <p>Position between your legs — crowded spaces</p>
-      </div>
-      <div class="skill-card locked">
-        <h2>Feet</h2>
-        <p>Paws on handler's feet — stay close in lines</p>
-      </div>
-    </section>
-  </main>
+  <!-- Setup overlay (shown on first visit) -->
+  <div class="pp-overlay" id="setup-overlay">
+    <div class="card pp-name-card text-center">
+      <div class="card-body p-4">
+        <img src="images/logo.png" alt="PawsPoint logo" class="pp-logo mb-3">
+        <h2 class="pp-brand mb-1" style="font-size:1.8rem;">PawsPoint</h2>
 
-  <footer>
-    <p>Built by students. Tested on a real dog.</p>
+        <!-- Step 1: Choose path -->
+        <div id="setup-choose">
+          <p class="text-muted mb-4">Get started</p>
+          <button class="btn pp-btn-go btn-lg w-100 mb-2" id="btn-new">New dog</button>
+          <button class="btn btn-outline-secondary btn-lg w-100" id="btn-join">I have a code</button>
+        </div>
+
+        <!-- Step 2a: New — enter name -->
+        <div id="setup-name" style="display:none;">
+          <p class="text-muted mb-3">What's your dog's name?</p>
+          <input type="text" id="dog-name-input" class="form-control form-control-lg text-center mb-3 pp-name-input" placeholder="e.g. Kona" maxlength="20">
+          <button class="btn pp-btn-go btn-lg w-100" id="name-submit" disabled>Let's go!</button>
+        </div>
+
+        <!-- Step 2b: Join — enter code -->
+        <div id="setup-join" style="display:none;">
+          <p class="text-muted mb-3">Enter your share code</p>
+          <input type="text" id="code-input" class="form-control form-control-lg text-center mb-2 pp-name-input" placeholder="e.g. KONA-7X3" maxlength="10" style="text-transform:uppercase; letter-spacing:.15em;">
+          <div id="join-error" class="text-danger small mb-2" style="display:none;"></div>
+          <button class="btn pp-btn-go btn-lg w-100" id="join-submit" disabled>Join</button>
+          <button class="btn btn-link btn-sm text-muted mt-2" id="join-back">Back</button>
+        </div>
+
+        <!-- Step 3: Show code (after new dog created) -->
+        <div id="setup-code" style="display:none;">
+          <p class="text-muted mb-2">Your share code:</p>
+          <div class="pp-code-display" id="new-code"></div>
+          <p class="text-muted small mt-2 mb-3">Use this code on other devices to sync progress.</p>
+          <button class="btn pp-btn-go btn-lg w-100" id="code-done">Got it!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit name overlay (reused for name changes) -->
+  <div class="pp-overlay" id="edit-overlay">
+    <div class="card pp-name-card text-center">
+      <div class="card-body p-4">
+        <h5 class="pp-brand mb-3">Change name</h5>
+        <input type="text" id="edit-name-input" class="form-control form-control-lg text-center mb-3 pp-name-input" maxlength="20">
+        <button class="btn pp-btn-go btn-lg w-100" id="edit-name-save">Save</button>
+        <button class="btn btn-link btn-sm text-muted mt-2" id="edit-name-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="text-center pt-4 pb-3">
+    <img src="images/logo.png" alt="PawsPoint logo" class="pp-logo mb-2">
+    <h1 class="pp-brand">PawsPoint</h1>
+    <p class="text-muted mb-0">
+      Training <strong class="pp-green pp-dog-name">your dog</strong> for travel
+      <a href="#" class="pp-edit-name" title="Change name"><i class="bi bi-pencil-square"></i></a>
+    </p>
+    <p class="mb-0 mt-1">
+      <span class="badge rounded-pill bg-light text-muted border" style="font-size:.7rem; letter-spacing:.1em;" id="code-badge" title="Share this code to sync across devices"></span>
+    </p>
+  </div>
+
+  <div class="container" style="max-width: 820px;">
+
+    <!-- ═══ TRAVEL READINESS DASHBOARD ═══ -->
+    <div class="card pp-card mb-4 overflow-hidden">
+      <!-- Card header -->
+      <div class="pp-card-header text-center py-3">
+        <h5 class="mb-0 text-white fw-bold text-uppercase" style="letter-spacing:.1em; font-size:.85rem;">
+          <i class="bi bi-airplane me-1"></i> Travel Readiness
+        </h5>
+      </div>
+
+      <div class="card-body px-4 pt-4 pb-3">
+        <div class="row align-items-center gx-5">
+          <!-- Ring -->
+          <div class="col-12 col-sm-4 text-center mb-4 mb-sm-0">
+            <div class="pp-ring" id="pp-ring">
+              <div class="pp-ring-inner">
+                <span class="pp-ring-pct" id="ring-pct">0%</span>
+                <span class="pp-ring-label">ready</span>
+              </div>
+            </div>
+            <div class="mt-2">
+              <span class="badge rounded-pill pp-count-badge" id="ring-count">0 of 6 complete</span>
+            </div>
+          </div>
+
+          <!-- Checklist -->
+          <div class="col-12 col-sm-8">
+            <div class="pp-checklist">
+              <div class="pp-check-row" data-skill="station">
+                <span class="pp-ci"><i class="bi bi-circle"></i></span>
+                <span class="pp-cn">Station</span>
+                <div class="progress flex-grow-1" style="height:6px;">
+                  <div class="progress-bar pp-bar" data-skill="station" role="progressbar" style="width:0%"></div>
+                </div>
+                <span class="pp-cp" data-skill="station">0%</span>
+              </div>
+              <div class="pp-check-row" data-skill="look">
+                <span class="pp-ci"><i class="bi bi-circle"></i></span>
+                <span class="pp-cn">Look</span>
+                <div class="progress flex-grow-1" style="height:6px;">
+                  <div class="progress-bar pp-bar" data-skill="look" role="progressbar" style="width:0%"></div>
+                </div>
+                <span class="pp-cp" data-skill="look">0%</span>
+              </div>
+              <div class="pp-check-row" data-skill="tuck">
+                <span class="pp-ci"><i class="bi bi-circle"></i></span>
+                <span class="pp-cn">Tuck</span>
+                <div class="progress flex-grow-1" style="height:6px;">
+                  <div class="progress-bar pp-bar" data-skill="tuck" role="progressbar" style="width:0%"></div>
+                </div>
+                <span class="pp-cp" data-skill="tuck">0%</span>
+              </div>
+              <div class="pp-check-row" data-skill="chin">
+                <span class="pp-ci"><i class="bi bi-circle"></i></span>
+                <span class="pp-cn">Chin</span>
+                <div class="progress flex-grow-1" style="height:6px;">
+                  <div class="progress-bar pp-bar" data-skill="chin" role="progressbar" style="width:0%"></div>
+                </div>
+                <span class="pp-cp" data-skill="chin">0%</span>
+              </div>
+              <div class="pp-check-row" data-skill="middle">
+                <span class="pp-ci"><i class="bi bi-circle"></i></span>
+                <span class="pp-cn">Middle</span>
+                <div class="progress flex-grow-1" style="height:6px;">
+                  <div class="progress-bar pp-bar" data-skill="middle" role="progressbar" style="width:0%"></div>
+                </div>
+                <span class="pp-cp" data-skill="middle">0%</span>
+              </div>
+              <div class="pp-check-row" data-skill="paws">
+                <span class="pp-ci"><i class="bi bi-circle"></i></span>
+                <span class="pp-cn">Paws</span>
+                <div class="progress flex-grow-1" style="height:6px;">
+                  <div class="progress-bar pp-bar" data-skill="paws" role="progressbar" style="width:0%"></div>
+                </div>
+                <span class="pp-cp" data-skill="paws">0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SKILL CARDS ═══ -->
+    <div class="row g-3 mb-5">
+      <div class="col-6 col-md-4">
+        <a href="skills/station.html" class="card pp-skill-card h-100 text-decoration-none">
+          <div class="card-body p-3">
+            <span class="badge pp-badge mb-2">1</span>
+            <h6 class="fw-bold pp-green mb-1">Station</h6>
+            <small class="text-muted">Go to a mat and settle</small>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="skills/look.html" class="card pp-skill-card h-100 text-decoration-none">
+          <div class="card-body p-3">
+            <span class="badge pp-badge mb-2">2</span>
+            <h6 class="fw-bold pp-green mb-1">Look</h6>
+            <small class="text-muted">Eye contact on cue</small>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="skills/tuck.html" class="card pp-skill-card h-100 text-decoration-none">
+          <div class="card-body p-3">
+            <span class="badge pp-badge mb-2">3</span>
+            <h6 class="fw-bold pp-green mb-1">Tuck</h6>
+            <small class="text-muted">Curl up in a small space</small>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="skills/chin.html" class="card pp-skill-card h-100 text-decoration-none">
+          <div class="card-body p-3">
+            <span class="badge pp-badge mb-2">4</span>
+            <h6 class="fw-bold pp-green mb-1">Chin</h6>
+            <small class="text-muted">Chin rest for calm</small>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="skills/middle.html" class="card pp-skill-card h-100 text-decoration-none">
+          <div class="card-body p-3">
+            <span class="badge pp-badge mb-2">5</span>
+            <h6 class="fw-bold pp-green mb-1">Middle</h6>
+            <small class="text-muted">Between your legs</small>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4">
+        <a href="skills/paws.html" class="card pp-skill-card h-100 text-decoration-none">
+          <div class="card-body p-3">
+            <span class="badge pp-badge mb-2">6</span>
+            <h6 class="fw-bold pp-green mb-1">Paws</h6>
+            <small class="text-muted">Paws on handler's feet</small>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="text-center py-3">
+    <small class="text-muted">Built by students. Tested on a real dog.</small>
   </footer>
+
+  <script src="js/sync.js"></script>
+  <script>
+    // ── Elements ──
+    var setupOverlay = document.getElementById('setup-overlay');
+    var editOverlay  = document.getElementById('edit-overlay');
+    var stepChoose   = document.getElementById('setup-choose');
+    var stepName     = document.getElementById('setup-name');
+    var stepJoin     = document.getElementById('setup-join');
+    var stepCode     = document.getElementById('setup-code');
+    var nameInput    = document.getElementById('dog-name-input');
+    var nameBtn      = document.getElementById('name-submit');
+    var codeInput    = document.getElementById('code-input');
+    var joinBtn      = document.getElementById('join-submit');
+    var joinError    = document.getElementById('join-error');
+    var codeBadge    = document.getElementById('code-badge');
+
+    // ── Title helper ──
+    function updateTitle() {
+      var name = PP.getDogName();
+      document.title = name
+        ? 'PawsPoint \u2014 ' + name + "'s Travel Training"
+        : 'PawsPoint \u2014 Train Your Dog for Travel';
+    }
+
+    // ── Show code badge ──
+    function showCodeBadge() {
+      var code = PP.getCode();
+      if (code) codeBadge.textContent = code;
+      else codeBadge.style.display = 'none';
+    }
+
+    // ── Setup flow ──
+    if (!PP.getCode()) {
+      setupOverlay.classList.add('visible');
+    }
+
+    // "New dog" button
+    document.getElementById('btn-new').addEventListener('click', function () {
+      stepChoose.style.display = 'none';
+      stepName.style.display = 'block';
+      nameInput.focus();
+    });
+
+    // "I have a code" button
+    document.getElementById('btn-join').addEventListener('click', function () {
+      stepChoose.style.display = 'none';
+      stepJoin.style.display = 'block';
+      codeInput.focus();
+    });
+
+    // Back from join
+    document.getElementById('join-back').addEventListener('click', function () {
+      stepJoin.style.display = 'none';
+      joinError.style.display = 'none';
+      stepChoose.style.display = 'block';
+    });
+
+    // Name input validation
+    nameInput.addEventListener('input', function () {
+      nameBtn.disabled = !nameInput.value.trim();
+    });
+    nameInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && nameInput.value.trim()) submitNewDog();
+    });
+    nameBtn.addEventListener('click', submitNewDog);
+
+    function submitNewDog() {
+      var name = nameInput.value.trim();
+      if (!name) return;
+      nameBtn.disabled = true;
+      nameBtn.textContent = 'Setting up\u2026';
+
+      var code = PP.generateCode(name);
+      PP.setCode(code);
+      PP.setDogName(name);
+
+      PP.saveToCloud(function (ok) {
+        if (!ok) {
+          // Cloud failed — still works offline with localStorage
+          console.warn('Cloud save failed, continuing offline');
+        }
+        // Show the code to the user
+        stepName.style.display = 'none';
+        document.getElementById('new-code').textContent = code;
+        stepCode.style.display = 'block';
+      });
+    }
+
+    // "Got it!" — dismiss code screen
+    document.getElementById('code-done').addEventListener('click', function () {
+      setupOverlay.classList.remove('visible');
+      PP.applyDogName();
+      updateTitle();
+      showCodeBadge();
+      render();
+    });
+
+    // Code input validation
+    codeInput.addEventListener('input', function () {
+      joinBtn.disabled = !codeInput.value.trim();
+      joinError.style.display = 'none';
+    });
+    codeInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && codeInput.value.trim()) submitJoin();
+    });
+    joinBtn.addEventListener('click', submitJoin);
+
+    function submitJoin() {
+      var code = codeInput.value.trim().toUpperCase();
+      if (!code) return;
+      joinBtn.disabled = true;
+      joinBtn.textContent = 'Loading\u2026';
+
+      PP.loadFromCloud(code, function (err, data) {
+        if (err) {
+          joinError.textContent = err === 'Code not found'
+            ? 'Code not found \u2014 check the spelling.'
+            : 'Something went wrong. Try again.';
+          joinError.style.display = 'block';
+          joinBtn.disabled = false;
+          joinBtn.textContent = 'Join';
+          return;
+        }
+        // Success — store locally
+        PP.setCode(code);
+        PP.setDogName(data.name);
+        PP.setProgress(data.progress);
+        setupOverlay.classList.remove('visible');
+        PP.applyDogName();
+        updateTitle();
+        showCodeBadge();
+        render();
+      });
+    }
+
+    // ── Edit name ──
+    document.querySelector('.pp-edit-name').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('edit-name-input').value = PP.getDogName();
+      editOverlay.classList.add('visible');
+      document.getElementById('edit-name-input').focus();
+      document.getElementById('edit-name-input').select();
+    });
+
+    document.getElementById('edit-name-save').addEventListener('click', function () {
+      var name = document.getElementById('edit-name-input').value.trim();
+      if (!name) return;
+      PP.setDogName(name);
+      PP.saveToCloud();
+      editOverlay.classList.remove('visible');
+      PP.applyDogName();
+      updateTitle();
+    });
+
+    document.getElementById('edit-name-cancel').addEventListener('click', function () {
+      editOverlay.classList.remove('visible');
+    });
+
+    // ── Init (returning user) ──
+    if (PP.getCode()) {
+      // Pull latest from cloud
+      PP.loadFromCloud(PP.getCode(), function (err, data) {
+        if (!err && data) {
+          PP.setDogName(data.name);
+          PP.setProgress(data.progress);
+          PP.applyDogName();
+          updateTitle();
+          render();
+        }
+      });
+    }
+
+    PP.applyDogName();
+    updateTitle();
+    showCodeBadge();
+
+    // ── Progress tracker (render) ──
+    function render() {
+      var p = PP.getProgress();
+
+      PP.SKILLS.forEach(function (s) {
+        var pct = p[s] || 0;
+        var done = pct >= 100;
+
+        document.querySelectorAll('.progress-bar[data-skill="' + s + '"]')
+          .forEach(function (el) { el.style.width = pct + '%'; });
+
+        document.querySelectorAll('.pp-cp[data-skill="' + s + '"]')
+          .forEach(function (el) { el.textContent = pct + '%'; });
+
+        document.querySelectorAll('.pp-check-row[data-skill="' + s + '"]').forEach(function (el) {
+          el.classList.toggle('done', done);
+          var icon = el.querySelector('.pp-ci i');
+          if (icon) {
+            icon.className = done ? 'bi bi-check-circle-fill' : 'bi bi-circle';
+          }
+        });
+      });
+
+      var total = PP.SKILLS.reduce(function (sum, s) { return sum + (p[s] || 0); }, 0);
+      var overall = Math.round(total / PP.SKILLS.length);
+      var completed = PP.SKILLS.filter(function (s) { return (p[s] || 0) >= 100; }).length;
+
+      var ring = document.getElementById('pp-ring');
+      ring.style.background = 'conic-gradient(from 220deg, #2d6a4f 0%, #52b788 ' + (overall * 2.8) + 'deg, #e9ecef ' + (overall * 2.8) + 'deg, #e9ecef 280deg, transparent 280deg)';
+
+      document.getElementById('ring-pct').textContent = overall + '%';
+      document.getElementById('ring-count').textContent = completed + ' of 6 complete';
+    }
+
+    render();
+  </script>
 </body>
 </html>
