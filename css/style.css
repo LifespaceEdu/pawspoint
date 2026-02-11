@@ -19,7 +19,7 @@ body::after {
   border-radius: 50%;
   background: #f4a261;
   border: 12px solid white;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
 }
 
